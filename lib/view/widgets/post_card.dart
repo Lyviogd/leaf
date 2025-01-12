@@ -2,26 +2,46 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:leaf/helper/demo_values.dart';
+import 'package:leaf/models/post_model.dart';
 import 'package:leaf/view/presentation/theme.dart';
+import 'package:leaf/view/pages/post_page.dart';
+import 'package:leaf/view/widgets/inherited_widgets/inherited_post_model.dart';
+
+bool _isLandscape(BuildContext context) =>
+    MediaQuery.of(context).orientation == Orientation.landscape;
 
 class PostCard extends StatelessWidget {
-  const PostCard({Key? key}) : super(key: key);
+  final PostModel PostData;
+
+  const PostCard({Key? key, required this.PostData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 6 / 3,
-      child: Card(
-        elevation: 2,
-        child: Container(
-          margin: const EdgeInsets.all(4.0),
-          padding: const EdgeInsets.all(4.0),
-          child: Column(
-            children: <Widget>[
-              _Post(),
-              Divider(color: Colors.grey),
-              _PostDetails(),
-            ],
+    final double aspectRatio = _isLandscape(context) ? 6 / 2 : 6 / 3;
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (BuildContext context) {
+          return PostPage();
+        }));
+      },
+      child: AspectRatio(
+        aspectRatio: aspectRatio,
+        child: Card(
+          elevation: 2,
+          child: Container(
+            margin: const EdgeInsets.all(4.0),
+            padding: const EdgeInsets.all(4.0),
+            child: InheritedPostModel(
+                postData: PostData,
+                child: Column(
+                  children: <Widget>[
+                    _Post(),
+                    Divider(color: Color.fromARGB(255, 139, 135, 135)),
+                    _PostDetails(),
+                  ],
+                )),
           ),
         ),
       ),
@@ -46,7 +66,7 @@ class _PostTitleAndSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle? titleTheme = Theme.of(context).textTheme.titleMedium;
+    final TextStyle? titleTheme = Theme.of(context).textTheme.titleLarge;
     final TextStyle? summaryTheme = Theme.of(context).textTheme.bodyMedium;
     final String title = DemoValues.postTitle;
     final String summary = DemoValues.postSummary;
