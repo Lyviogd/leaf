@@ -11,9 +11,8 @@ bool _isLandscape(BuildContext context) =>
     MediaQuery.of(context).orientation == Orientation.landscape;
 
 class PostCard extends StatelessWidget {
-  final PostModel PostData;
-
-  const PostCard({Key? key, required this.PostData}) : super(key: key);
+  final PostModel data;
+  const PostCard({Key? key, required this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +33,15 @@ class PostCard extends StatelessWidget {
             margin: const EdgeInsets.all(4.0),
             padding: const EdgeInsets.all(4.0),
             child: InheritedPostModel(
-                postData: PostData,
-                child: Column(
-                  children: <Widget>[
-                    _Post(),
-                    Divider(color: Color.fromARGB(255, 139, 135, 135)),
-                    _PostDetails(),
-                  ],
-                )),
+              postData: data,
+              child: Column(
+                children: <Widget>[
+                  _Post(),
+                  Divider(color: Color.fromARGB(255, 139, 135, 135)),
+                  _PostDetails(),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -68,11 +68,14 @@ class _PostTitleAndSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextStyle? titleTheme = Theme.of(context).textTheme.titleLarge;
     final TextStyle? summaryTheme = Theme.of(context).textTheme.bodyMedium;
-    final String title = DemoValues.postTitle;
-    final String summary = DemoValues.postSummary;
+    final PostModel postData =
+        InheritedPostModel.of(context).postData as PostModel;
+    final String title = postData.title;
+    final String summary = postData.summary;
+    final flex = _isLandscape(context) ? 5 : 3;
 
     return Expanded(
-      flex: 3,
+      flex: flex,
       child: Padding(
         padding: const EdgeInsets.only(left: 4.0),
         child: Column(
@@ -94,7 +97,9 @@ class _PostImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(flex: 2, child: Image.asset(DemoValues.postImage));
+    final PostModel postData =
+        InheritedPostModel.of(context).postData as PostModel;
+    return Expanded(flex: 2, child: Image.asset(postData.imageURL));
   }
 }
 
@@ -120,7 +125,8 @@ class _UserNameAndEmail extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextStyle? nameTheme = Theme.of(context).textTheme.subtitle1;
     final TextStyle? emailTheme = Theme.of(context).textTheme.bodyMedium;
-
+    final PostModel postData =
+        InheritedPostModel.of(context).postData as PostModel;
     return Expanded(
       flex: 5,
       child: Padding(
@@ -129,9 +135,9 @@ class _UserNameAndEmail extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(DemoValues.userName, style: nameTheme),
+            Text(postData.author.name, style: nameTheme),
             SizedBox(height: 2.0),
-            Text(DemoValues.userEmail, style: emailTheme),
+            Text(postData.author.email, style: emailTheme),
           ],
         ),
       ),
@@ -144,10 +150,12 @@ class _UserImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final PostModel postData =
+        InheritedPostModel.of(context).postData as PostModel;
     return Expanded(
       flex: 1,
       child: CircleAvatar(
-        backgroundImage: AssetImage(DemoValues.userImage),
+        backgroundImage: AssetImage(postData.author.image),
       ),
     );
   }
@@ -159,9 +167,11 @@ class _PostTimeStamp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextStyle timeTheme = TextThemes.dateStyle;
+    final PostModel postData =
+        InheritedPostModel.of(context).postData as PostModel;
     return Expanded(
       flex: 2,
-      child: Text(DemoValues.postTime, style: timeTheme),
+      child: Text(postData.postTime as String, style: timeTheme),
     );
   }
 }

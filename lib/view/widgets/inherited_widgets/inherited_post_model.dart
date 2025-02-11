@@ -5,7 +5,7 @@ class InheritedPostModel extends InheritedWidget {
   final PostModel postData;
   final Widget child;
 
-  InheritedPostModel({
+  const InheritedPostModel({
     Key? key,
     required this.postData,
     required this.child,

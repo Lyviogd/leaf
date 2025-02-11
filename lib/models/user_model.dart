@@ -13,7 +13,7 @@ class UserModel {
     required this.id,
     required this.name,
     required this.email,
-    required this.image,
+    this.image = "assets\images\nopic.jpg",
     required this.followers,
     required this.joined,
     required this.posts,
