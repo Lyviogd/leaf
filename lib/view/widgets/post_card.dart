@@ -11,8 +11,7 @@ bool _isLandscape(BuildContext context) =>
     MediaQuery.of(context).orientation == Orientation.landscape;
 
 class PostCard extends StatelessWidget {
-  final PostModel data;
-  const PostCard({Key? key, required this.data}) : super(key: key);
+  const PostCard({Key? key, PostModel? data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +32,7 @@ class PostCard extends StatelessWidget {
             margin: const EdgeInsets.all(4.0),
             padding: const EdgeInsets.all(4.0),
             child: InheritedPostModel(
-              postData: data,
+              //postData: data,
               child: Column(
                 children: <Widget>[
                   _Post(),
@@ -70,6 +69,9 @@ class _PostTitleAndSummary extends StatelessWidget {
     final TextStyle? summaryTheme = Theme.of(context).textTheme.bodyMedium;
     final PostModel postData =
         InheritedPostModel.of(context).postData as PostModel;
+    if (postData == null) {
+      return Text("Y a pas de données là :73");
+    }
     final String title = postData.title;
     final String summary = postData.summary;
     final flex = _isLandscape(context) ? 5 : 3;
@@ -99,6 +101,9 @@ class _PostImage extends StatelessWidget {
   Widget build(BuildContext context) {
     final PostModel postData =
         InheritedPostModel.of(context).postData as PostModel;
+    if (postData == null) {
+      return Text("Y a pas de données là :73");
+    }
     return Expanded(flex: 2, child: Image.asset(postData.imageURL));
   }
 }
@@ -127,6 +132,9 @@ class _UserNameAndEmail extends StatelessWidget {
     final TextStyle? emailTheme = Theme.of(context).textTheme.bodyMedium;
     final PostModel postData =
         InheritedPostModel.of(context).postData as PostModel;
+    if (postData == null) {
+      return Text("Y a pas de données là :73");
+    }
     return Expanded(
       flex: 5,
       child: Padding(
@@ -152,6 +160,9 @@ class _UserImage extends StatelessWidget {
   Widget build(BuildContext context) {
     final PostModel postData =
         InheritedPostModel.of(context).postData as PostModel;
+    if (postData == null) {
+      return Text("Y a pas de données là :73");
+    }
     return Expanded(
       flex: 1,
       child: CircleAvatar(
@@ -169,6 +180,9 @@ class _PostTimeStamp extends StatelessWidget {
     final TextStyle timeTheme = TextThemes.dateStyle;
     final PostModel postData =
         InheritedPostModel.of(context).postData as PostModel;
+    if (postData == null) {
+      return Text("Y a pas de données là :73");
+    }
     return Expanded(
       flex: 2,
       child: Text(postData.postTime as String, style: timeTheme),
