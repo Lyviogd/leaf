@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
         itemCount: DemoValues.posts.length,
         itemBuilder: (BuildContext context, int index) {
           return PostCard(
-            data: DemoValues.posts[index],
+            postData: DemoValues.posts[index],
           );
         },
       ),

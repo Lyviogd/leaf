@@ -11,7 +11,9 @@ bool _isLandscape(BuildContext context) =>
     MediaQuery.of(context).orientation == Orientation.landscape;
 
 class PostCard extends StatelessWidget {
-  const PostCard({Key? key, PostModel? data}) : super(key: key);
+  final PostModel postData;
+
+  const PostCard({Key? key, required this.postData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +34,11 @@ class PostCard extends StatelessWidget {
             margin: const EdgeInsets.all(4.0),
             padding: const EdgeInsets.all(4.0),
             child: InheritedPostModel(
-              //postData: data,
+              postData: postData,
               child: Column(
                 children: <Widget>[
                   _Post(),
-                  Divider(color: Color.fromARGB(255, 139, 135, 135)),
+                  Divider(color: Color.fromARGB(255, 235, 188, 60)),
                   _PostDetails(),
                 ],
               ),
@@ -72,8 +74,8 @@ class _PostTitleAndSummary extends StatelessWidget {
     if (postData == null) {
       return Text("Y a pas de données là :73");
     }
-    final String title = postData.title;
-    final String summary = postData.summary;
+    final String? title = postData.title;
+    final String? summary = postData.summary;
     final flex = _isLandscape(context) ? 5 : 3;
 
     return Expanded(
@@ -84,9 +86,9 @@ class _PostTitleAndSummary extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Text(title, style: titleTheme),
+            Text(title!, style: titleTheme),
             SizedBox(height: 2.0),
-            Text(summary, style: summaryTheme),
+            Text(summary!, style: summaryTheme),
           ],
         ),
       ),
@@ -104,7 +106,7 @@ class _PostImage extends StatelessWidget {
     if (postData == null) {
       return Text("Y a pas de données là :73");
     }
-    return Expanded(flex: 2, child: Image.asset(postData.imageURL));
+    return Expanded(flex: 2, child: Image.asset(postData.imageURL!));
   }
 }
 
@@ -143,9 +145,9 @@ class _UserNameAndEmail extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(postData.author.name, style: nameTheme),
+            Text(postData.author!.name!, style: nameTheme),
             SizedBox(height: 2.0),
-            Text(postData.author.email, style: emailTheme),
+            Text(postData.author!.email!, style: emailTheme),
           ],
         ),
       ),
@@ -166,7 +168,7 @@ class _UserImage extends StatelessWidget {
     return Expanded(
       flex: 1,
       child: CircleAvatar(
-        backgroundImage: AssetImage(postData.author.image),
+        backgroundImage: AssetImage(postData.author!.image!),
       ),
     );
   }
@@ -185,7 +187,7 @@ class _PostTimeStamp extends StatelessWidget {
     }
     return Expanded(
       flex: 2,
-      child: Text(postData.postTime as String, style: timeTheme),
+      child: Text(postData.postTimeFormatted as String, style: timeTheme),
     );
   }
 }

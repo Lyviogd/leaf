@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:leaf/modelS/post_model.dart';
+import 'package:leaf/models/post_model.dart';
 
 class InheritedPostModel extends InheritedWidget {
   final PostModel? postData;
   final Widget child;
 
-  const InheritedPostModel({
+  InheritedPostModel({
     Key? key,
-    this.postData,
+    @required this.postData,
     required this.child,
   }) : super(key: key, child: child);
 
